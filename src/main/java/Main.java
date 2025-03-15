@@ -1,6 +1,3 @@
-import utils.RegexTest;
-import utils.TestPolygon;
-
 /**
  * Created by ldennis on 4/18/16.
  */
@@ -83,17 +80,19 @@ public class Main {
         // TestCompletable.test3();
         // TestParcel.test1("test1");
         // TestJoda.testJoda7();
-        //    TestHourDelta.test1();
+        // TestHourDelta.test1();
         // TestHourDelta.test2();
         // StringTest1 test = new StringTest1();
         // TestThread1 test = new TestThread1();
-        //  StreamTest1 test = new StreamTest1();
+        // StreamTest1 test = new StreamTest1();
         // LargestSum.test1();
-        //  LongestString.test1();
+        // LongestString.test1();
         // TestStream3.test();
+        // TestStream2.test1();
+        //
 
         try {
-           Streamer2.test1();
+           StringTest3.test2();
         } catch (Exception ex) {
             // ex.fillInStackTrace();
             String stackTrace = stackTraceToString(ex);
