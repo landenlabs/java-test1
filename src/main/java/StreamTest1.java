@@ -95,5 +95,13 @@ public class StreamTest1 {
             System.out.println( cntChar.firstEntry());
         }
 
+        // ---
+        {
+            List<String> users = Arrays.asList("john", "steve", "jack", "john", "peter", "john");
+            List<String> uniqueUsers = users.stream()
+                    .distinct()
+                    .toList();
+            System.out.println("unique users=" + uniqueUsers);
+        }
     }
 }
