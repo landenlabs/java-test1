@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AppendStringTest {
 
@@ -308,9 +305,28 @@ public class AppendStringTest {
         }
     }
 
-    static String testJoin() {
-        String[] array = {"Hello", "World"};
-        String out = String.join(",", array);
-        return out;
+    public static void test3() {
+        String[] array1 = {"Hello", "World"};
+        String str = String.join(",", array1);
+        System.out.println("String.join=" + str);
+
+        Integer[] array2 = {1, 2, 3};
+        // Does not compile
+        // String str2 = String.join(",", array2);
+
+        List<Integer> array3 = Arrays.asList(1, 2, 3);
+        // Does not compile
+        // String str3 = String.join(", ", array3);
+
+        // Does not compile
+        // str = array3.stream().collect(Collectors.joining(", "));
+
+        str = String.join(", ", array3.stream().map(Object::toString).toList());
+        System.out.println("String.join(Stream.map(toString).toList)=" + str);
+
+        str = array3.toString();
+        System.out.println("Array.toString=" + str);
+
+
     }
 }

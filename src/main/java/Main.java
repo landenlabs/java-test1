@@ -89,10 +89,12 @@ public class Main {
         // LongestString.test1();
         // TestStream3.test();
         // TestStream2.test1();
+        // StringTest3.test2();
+        // AppendStringTest.test3();
         //
 
         try {
-           StringTest3.test2();
+            StreamTest1.test2();
         } catch (Exception ex) {
             // ex.fillInStackTrace();
             String stackTrace = stackTraceToString(ex);
