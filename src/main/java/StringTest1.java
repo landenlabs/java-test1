@@ -15,13 +15,7 @@ public class StringTest1 {
 			if (arrStr[idx] == find)
 				return true;
 		}
-
-		int number = 10;
-		Integer inum = number;
-		System.out.println(inum);
-
-		String joined = String.join(",", arrStr);
-
+		
 		return false;
 	}
 	
@@ -63,6 +57,46 @@ public class StringTest1 {
 		System.out.println("\nInput address=[" + address + "]");
 		System.out.println("       1st part=[" + part1.trim() + "]");
 		System.out.println("       2nd part=[" + part2.trim() + "]");
+	}
+
+	public static void testEqual() {
+		{
+			String s1 = "Java";
+			String s2 = "Ja" + "va";
+			System.out.println(s1 == s2);
+			System.out.println(s1 == "Ja" + "va");
+			for (int idx = 0; idx < 2; idx++) {
+				System.out.println((s1 == ("Ja" + ((idx == 0) ? "va" : "xx"))) + "  " + ("Ja" + ((idx == 0) ? "va" : "xx")));
+			}
+		}
+		System.out.println(10 + 20 + "30" + 40 + 50);
+
+		{
+			String s1 = "abc";
+			String s2 = new String("abc");
+			System.out.println(s1.equals(s2) && s1 == s2);
+
+			s2 = s2.intern();
+			System.out.println(s1.equals(s2) && s1 == s2);
+
+			String s3 = new String("xyz").intern();
+			String s4 = "xyz";
+			System.out.println(s3.equals(s4) && s3 == s4);
+
+		}
+
+		{
+			int x = 2;
+			int y = 0;
+			for (; y < 10; ++y) {
+				if (y % x == 0)
+					continue;
+				else if (y == 8)
+					break;
+				else
+					System.out.print(y + " ");
+			}
+		}
 	}
 
 	/**

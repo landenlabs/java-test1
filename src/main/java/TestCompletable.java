@@ -1,6 +1,12 @@
+import org.joda.time.DateTime;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class TestCompletable {
 
@@ -105,4 +111,136 @@ public class TestCompletable {
             return xx;
         });
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // From article
+    //    https://medium.com/@viraj_63415/java-the-flaws-in-completablefuture-allof-0e3e454c23c4
+
+    private static Supplier<String> task(String name, int secs, boolean fail) {
+
+        return () -> {
+            try {
+                log("Start task %s(%d)".formatted(name, secs));
+                Thread.sleep(TimeUnit.SECONDS.toMillis(secs));
+
+                if (fail) {
+                    String msg = "task %s(%s) failed".formatted(name, secs);
+                    log(msg);
+                    throw new RuntimeException(msg);
+                }
+
+                log("End task %s(%d)".formatted(name, secs));
+                return name;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+    }
+
+    private static void log(String msg) {
+        String thread = Thread.currentThread().getName();
+        System.out.printf("%s => %s%n", thread, msg);
+    }
+
+    public static void test4() {
+
+        // Create the tasks to run
+        var subtask1 = task("subtask1", 3, false);
+        var subtask2 = task("subtask2", 5, false);
+        var subtask3 = task("subtask3", 7, false);
+
+        // Start subtasks in parallel
+        var f1 = CompletableFuture.supplyAsync(subtask1);
+        var f2 = CompletableFuture.supplyAsync(subtask2);
+        var f3 = CompletableFuture.supplyAsync(subtask3);
+
+        // Call allOf(..) to create a combined Future
+        CompletableFuture<Void> combFuture =
+                CompletableFuture.allOf(f1, f2, f3);
+
+        // Wait till all tasks completed
+        List<String> results
+                = combFuture
+                .thenApply(unused -> {
+                    log("All subtasks successful");
+                    List<String> result = Stream.of(f1, f2, f3)
+                            .map(f -> f.getNow(null))
+                            .toList();
+                    return result;
+                })
+                .join();
+
+        // Handle results here
+        log("Results = %s%n".formatted(results));
+
+        // Join() is called just so the program
+        // does not terminate
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    private static Supplier<String> job(CompletableFuture<String> future, String name, int secs, boolean fail) {
+
+        return () -> {
+            try {
+                log("Start task %s(%d)".formatted(name, secs));
+                if (future.isCancelled())
+                    return name;
+
+                Thread.sleep(TimeUnit.SECONDS.toMillis(secs));
+
+                if (fail) {
+                    String msg = "task %s(%s) failed".formatted(name, secs);
+                    log(msg);
+                    future.cancel(true);
+                }
+
+                log("End task %s(%d)".formatted(name, secs));
+                future.complete(name);
+                return name;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+    }
+
+    public static void test5() {
+
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        // Create the tasks to run
+        var subtask1 = task("subtask1", 3, false);
+        var subtask2 = task("subtask2", 5, true);
+        var subtask3 = task("subtask3", 7, false);
+
+        // Start subtasks in parallel
+        var f1 = CompletableFuture.supplyAsync(subtask1);
+        var f2 = CompletableFuture.supplyAsync(subtask2);
+        var f3 = CompletableFuture.supplyAsync(subtask3);
+
+        // Call allOf(..) to create a combined Future
+        CompletableFuture<Void> combFuture =
+                CompletableFuture.allOf(f1, f2, f3);
+
+        // Wait till all tasks completed
+        List<String> results
+                = combFuture
+                .thenApply(unused -> {
+                    log("All subtasks successful");
+                    List<String> result = Stream.of(f1, f2, f3)
+                            .map(f -> f.getNow(null))
+                            .toList();
+                    return result;
+                })
+                .join();
+
+        // Handle results here
+        log("Results = %s%n".formatted(results));
+
+        // Join() is called just so the program
+        // does not terminate
+    }
+
 }

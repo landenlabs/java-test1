@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AppendStringTest {
 
@@ -81,7 +82,7 @@ public class AppendStringTest {
         }
     }
 
-
+    // --------------------------------------------------------------------------------------------
     public static void test1() {
 
         final int LOOP_CNT = 3;
@@ -176,6 +177,7 @@ public class AppendStringTest {
         }
     }
 
+    // --------------------------------------------------------------------------------------------
     public static void test2() {
         final int LOOPS = 100;
         final int ITERATION = 1000;
@@ -305,7 +307,43 @@ public class AppendStringTest {
         }
     }
 
+    static String testJoin() {
+        String[] array = {"Hello", "World"};
+        String out = String.join(",", array);
+        return out;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    static class Thing1 {
+        int num;
+        public Thing1(int num) {
+            this.num = num;
+        }
+
+        @Override
+        public String toString() {
+            return "Thing1(" + num + ")";
+        }
+    }
+
+    /*
+        JOIN STRINGS
+        https://www.baeldung.com/java-array-to-string
+     */
     public static void test3() {
+        List<String>  list1 = Arrays.asList("string1", "string2", "string3");
+        List<Object>  list2 = Arrays.asList(1, 2, 3);
+        List<Object>  list3 = Arrays.asList(1F, 2F, 3F);
+        List<Object>  list4 = Arrays.asList(new Thing1(1), new Thing1(2), new Thing1(3));
+
+        String str1 = String.join(", ", list1);
+        String str2 = String.join(", ", list2.stream().toString());
+        String str3 = String.join(", ", list2.stream().map(Object::toString).collect(Collectors.toList()));
+        String str4 = list2.stream().map(Object::toString).collect(Collectors.joining(", "));
+
+    }
+    
+     public static void test4() {
         String[] array1 = {"Hello", "World"};
         String str = String.join(",", array1);
         System.out.println("String.join=" + str);

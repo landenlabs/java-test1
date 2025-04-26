@@ -144,4 +144,38 @@ public class TestMap {
 
         System.out.println("\n[TestMap Test3 - Done]");
     }
+
+    private static int nearest(NavigableMap<Integer, Integer> map, int key) {
+        Integer before = map.floorKey(key);
+        Integer after = map.ceilingKey(key);
+        if (before == null) return after;
+        if (after == null) return before;
+        return (Math.abs(key - before) <  Math.abs(after - key)) ? before : after;
+    }
+    private static void showNearest(NavigableMap<Integer, Integer> map, int key) {
+        System.out.printf("Nearest to %d is %d\n", key, nearest(map, key));
+    }
+
+    public static void test4() {
+        final int MIN_KEY = 100;
+        final int MAX_KEY = 400;
+        NavigableMap<Integer, Integer> map = new TreeMap<>();
+        for (int key = MIN_KEY; key <= MAX_KEY; key += 100) {
+            map.put(key, key + 11);
+        }
+
+        for (int key = MIN_KEY-16; key < MIN_KEY+16; key += 3) {
+            if (nearest(map, key) != MIN_KEY)
+                System.out.printf("Got wrong value for nearest to %d\n", key);
+        }
+
+        for (int key = 135; key < 305; key += 3) {
+            showNearest(map, key);
+        }
+
+        for (int key = MAX_KEY-16; key < MAX_KEY+16; key += 3) {
+            if (nearest(map, key) != MAX_KEY)
+                System.out.printf("Got wrong value for nearest to %d\n", key);
+        }
+    }
 }

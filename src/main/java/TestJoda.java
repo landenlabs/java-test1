@@ -4,9 +4,11 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Dennis Lang on 2/22/17.
@@ -39,7 +41,7 @@ public class TestJoda {
         Minutes minutesBetween = Minutes.minutesBetween(dt1, dt2);
         System.out.println("Minutes between " + minutes + " min=" + minutesBetween);
         System.out.println("Minutes between " + minutes + " hrs=" + minutesBetween.dividedBy(60));
-        System.out.println("Minutes between " + minutes + " hrs=" + Math.round(minutesBetween.getMinutes()/60.0f));
+        System.out.println("Minutes between " + minutes + " hrs=" + Math.round(minutesBetween.getMinutes() / 60.0f));
 
         System.out.println();
     }
@@ -92,7 +94,7 @@ public class TestJoda {
     public static void TestJoda3() {
 
         boolean is24HourFormat = true;
-        TimeZone timeZone= TimeZone.getDefault();
+        TimeZone timeZone = TimeZone.getDefault();
         DateTime now = DateTime.now();
         int nowHour = now.hourOfDay().get();
         int endOffset = 2;
@@ -104,16 +106,16 @@ public class TestJoda {
         DateTime startDt = today;
         for (int hour = nowHour; hour <= 48; hour++) {
             startDt = today.plusHours(hour);
-            DateTime endDt = today.plusHours(hour+endOffset);
+            DateTime endDt = today.plusHours(hour + endOffset);
             System.out.printf("%8d %s\n",
-                     hour,
+                    hour,
                     getFormatedAlertDuration(is24HourFormat, startDt.toDate(), endDt.toDate(), timeZone)
-                    );
+            );
         }
     }
 
     public static String getFormatedAlertDuration(boolean is24HourFormat,
-           Date startDate, Date endDate, TimeZone zone) {
+                                                  Date startDate, Date endDate, TimeZone zone) {
         if (startDate != null && endDate != null && !endDate.equals(startDate)) {
 
             DateTime now = DateTime.now();
@@ -150,7 +152,7 @@ public class TestJoda {
                 startPrefix =
                         (isToday(startDate) ? "Today" :
                                 (isTomorrow(startDate) ? "Tomorrow" : "")).toLowerCase();
-                endPrefix =  (
+                endPrefix = (
                         isToday(endDate) ? "Today" :
                                 (isTomorrow(endDate) ? "Tomorrow" : "")).toLowerCase();
                 if (!startDT.isBefore(secondDay)) { // startDT >= secondDay
@@ -161,13 +163,12 @@ public class TestJoda {
                 }
             }
 
-            if (startDT.isBefore(now) ){
+            if (startDT.isBefore(now)) {
                 if (isToday(endDate))
                     endPrefix = "";
                 startFmt = null;
                 endPrefix = ("Until").toLowerCase() + " " + endPrefix;
-            }
-            else if (Duration.millis(durationMillis).getStandardHours() <= 1) {
+            } else if (Duration.millis(durationMillis).getStandardHours() <= 1) {
                 endFmt = null;
             }
 
@@ -175,14 +176,14 @@ public class TestJoda {
             String endStr = "";
             if (startFmt != null) {
                 startFmt.setTimeZone(zone);
-                startStr =  startPrefix + " " + startFmt.format(startDate).toLowerCase();
+                startStr = startPrefix + " " + startFmt.format(startDate).toLowerCase();
             }
             if (endFmt != null) {
                 endFmt.setTimeZone(zone);
-                endStr = endPrefix  + " " +  endFmt.format(endDate).toLowerCase();
+                endStr = endPrefix + " " + endFmt.format(endDate).toLowerCase();
             }
 
-            String sepStr =  (startStr.isEmpty() || endStr.isEmpty()) ? "" : " - ";
+            String sepStr = (startStr.isEmpty() || endStr.isEmpty()) ? "" : " - ";
             return (startStr.trim() + sepStr + endStr.trim()).replaceAll(" +", " "); // fix multiple spaces
         }
 
@@ -214,9 +215,9 @@ public class TestJoda {
     }
 
     public static TimeZone getTimeZone(float timeZoneOffsetInHours) {
-        String sign = timeZoneOffsetInHours < 0.0F?"":"+";
-        int hours = (int)timeZoneOffsetInHours;
-        int mins = (int)((timeZoneOffsetInHours - (float)hours) * 60.0F);
+        String sign = timeZoneOffsetInHours < 0.0F ? "" : "+";
+        int hours = (int) timeZoneOffsetInHours;
+        int mins = (int) ((timeZoneOffsetInHours - (float) hours) * 60.0F);
         String tzStr = String.format("GMT%s%d:%02d", new Object[]{sign, Integer.valueOf(hours), Integer.valueOf(Math.abs(mins))});
         TimeZone tz = TimeZone.getTimeZone(tzStr);
         return tz;
@@ -253,7 +254,7 @@ public class TestJoda {
 
         if (true) {
 
-        //    DateTimeFormatter FORMATTER_HEADLINE_DATE = DateTimeFormat.forPattern("yyyy-MM-dd");
+            //    DateTimeFormatter FORMATTER_HEADLINE_DATE = DateTimeFormat.forPattern("yyyy-MM-dd");
             DateFormat RPC822_TZ_LOC_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
             DateFormat RPC822_TZ_GMT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
             DateFormat RPC822_TZ_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -264,13 +265,13 @@ public class TestJoda {
 
 
             String[] dateStrings = {
-                "2018-01-26T0:00:00 -0400",
-                "2018-01-26T0:00:00 -0500",
-                "2018-01-26T0:00:00 -0600",
+                    "2018-01-26T0:00:00 -0400",
+                    "2018-01-26T0:00:00 -0500",
+                    "2018-01-26T0:00:00 -0600",
 
-                "2018-01-26T4:00:00Z",
-                "2018-01-26T5:00:00Z",
-                "2018-01-26T6:00:00Z",
+                    "2018-01-26T4:00:00Z",
+                    "2018-01-26T5:00:00Z",
+                    "2018-01-26T6:00:00Z",
             };
 
             DateTimeFormatter isoTimeGMT = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss Z");
@@ -311,11 +312,11 @@ public class TestJoda {
                 System.out.println("      dtUtc=" + isoTimeGMT.print(dt));
 
 
-            // System.out.println("\nDateTruncation");
-            DateTime day1 = dt.withTimeAtStartOfDay();
-            System.out.println("  withTimeAtStartOfDay=" + isoTimeGMT.print(day1));
-            DateTime day2 = dt.withTime(0, 0, 0, 0);
-            System.out.println("     withTime(0,0,0,0)=" + isoTimeGMT.print(day2));
+                // System.out.println("\nDateTruncation");
+                DateTime day1 = dt.withTimeAtStartOfDay();
+                System.out.println("  withTimeAtStartOfDay=" + isoTimeGMT.print(day1));
+                DateTime day2 = dt.withTime(0, 0, 0, 0);
+                System.out.println("     withTime(0,0,0,0)=" + isoTimeGMT.print(day2));
 
 
                 System.out.println("===================");
@@ -334,8 +335,8 @@ public class TestJoda {
 
 
         String tzFmt = "2018-01-26T0:00:00 %03d00";
-        String date1Str = String.format(tzFmt, tzHourOffset-1); // Before TZ
-        String date2Str = String.format(tzFmt, tzHourOffset+1); // After TZ
+        String date1Str = String.format(tzFmt, tzHourOffset - 1); // Before TZ
+        String date2Str = String.format(tzFmt, tzHourOffset + 1); // After TZ
 
         System.out.println("\nJoda date manipulation occurs in local TZ");
         System.out.println("Manipulation can cause day to shift");
@@ -366,7 +367,7 @@ public class TestJoda {
     }
 
 
-    public static boolean inTimeRange1(DateTime time,  Date timeStart, Date timeEnd) {
+    public static boolean inTimeRange1(DateTime time, Date timeStart, Date timeEnd) {
         return time.getMillis() >= timeStart.getTime() && time.getMillis() <= timeEnd.getTime();
     }
 
@@ -379,6 +380,7 @@ public class TestJoda {
         }
         return false;
     }
+
     public static boolean checkInterval(Date start, Date end) {
         return checkInterval(new DateTime(start), new DateTime(end));
     }
@@ -390,7 +392,7 @@ public class TestJoda {
     public static void testRange(int i1, int i2, int i3) {
         Date date = new Date();
         DateTime dt1 = new DateTime(date).plus(i1);
-        Date  dt2 = new DateTime(date).plus(i2).toDate();
+        Date dt2 = new DateTime(date).plus(i2).toDate();
         Date dt3 = new DateTime(date).plus(i3).toDate();
         if (inTimeRange1(dt1, dt2, dt3) != inTimeRange2(dt1, dt2, dt3)) {
             System.out.printf("Differ %d, %d, %d\n", i1, i2, i3);
@@ -398,6 +400,7 @@ public class TestJoda {
             System.out.printf("%b %d, %d, %d\n", inTimeRange1(dt1, dt2, dt3), i1, i2, i3);
         }
     }
+
     public static void TestJoda6() {
         DateFormat RPC822_TZ_GMT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss Z");
         TimeZone GMT = TimeZone.getTimeZone("GMT");
@@ -415,7 +418,7 @@ public class TestJoda {
     public static void testJoda7() {
 
 
-        String[] dateStrs = new String[] {
+        String[] dateStrs = new String[]{
                 "Sat, 28 May 2016 08:46:40 Z",      // Z converted to GMT
                 "Sat, 28 May 2016 08:46:40 UT",     // UT converted to GMT
                 "Sat, 28 May 2016 08:46:40 GMT",
@@ -480,10 +483,25 @@ public class TestJoda {
     static DateTime parseDate(String date, DateTimeFormatter formatter) {
         DateTime result = null;
         // try {
-            result = formatter.parseDateTime(date);
+        result = formatter.parseDateTime(date);
         // } catch (Exception ex) {
         //     System.out.println("Cannot parse date from string:"+  date + "\n" + ex.getMessage());
         // }
         return result;
+    }
+
+    // -------------------------------------------------------------------------------------
+    public static void testJoda9() {
+        System.out.println("[Start test joda9]");
+
+        DateTime now = DateTime.now();
+
+        System.out.println("Now=" + now.toString("dd/MMM/yyyy HH:mm Z"));
+        DateTimeZone dtz = DateTimeZone.getDefault();
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(dtz.getOffset(now.getMillis()));
+        System.out.println("  TimeZone offset=" + minutes + "(minutes)");
+        System.out.println("  TimeZone offset=" + (minutes/60) + "(hours)");
+
+        System.out.println("[Done test joda9]");
     }
 }

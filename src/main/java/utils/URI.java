@@ -6,6 +6,7 @@ package utils;
  */
 
 
+import com.google.android.mms.pdu.CharacterSets;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -1461,8 +1462,8 @@ public final class URI
      * component is undefined but the other is defined then the first is
      * considered to be less than the second.  Unless otherwise noted, string
      * components are ordered according to their natural, case-sensitive
-     * ordering as defined by the link java.lang.String#compareTo(Object)
-     * String.compareTo method.  String components that are subject to
+     * ordering as defined by the {@link java.lang.String#compareTo(Object)
+     * String.compareTo} method.  String components that are subject to
      * encoding are compared by comparing their raw forms rather than their
      * encoded forms.
      *

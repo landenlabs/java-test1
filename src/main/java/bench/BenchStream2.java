@@ -31,12 +31,17 @@ TestStream2.joinWords3  10000  avgt       0.148          ms/op
 TestStream2.joinWords4  10000  avgt       0.189          ms/op
  */
 
-@BenchmarkMode(Mode.AverageTime) // @BenchmarkMode(Mode.Throughput)
+
+// Throughput, AverageTime, SampleTime, and SingleShotTime.
+// @BenchmarkMode(Mode.AverageTime) //
+@BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
-@State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
 @Warmup(iterations = 0, time = 2000, timeUnit = TimeUnit.MILLISECONDS)
 @Measurement(iterations = 1)
+
+// Prevents compiler constant optimization.
+@State(Scope.Benchmark) // Benchmark, Group or Thread
 public class BenchStream2 {
 
     private static final boolean BENCHTEST = true;
