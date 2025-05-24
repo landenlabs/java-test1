@@ -83,23 +83,24 @@ public class Main {
         // TestCompletable.test3();
         // TestParcel.test1("test1");
         // TestJoda.testJoda7();
-        //    TestHourDelta.test1();
+        // TestHourDelta.test1();
         // TestHourDelta.test2();
         // StringTest1 test = new StringTest1();
         // TestThread1 test = new TestThread1();
-        //  StreamTest1 test = new StreamTest1();
+        // StreamTest1 test = new StreamTest1();
         // LargestSum.test1();
-        //  LongestString.test1();
+        // LongestString.test1();
         // TestStream3.test();
         // StringTest1.testEqual();
         // TestCompletable.test5();
-        //  TestContainers.test1();
+        // TestContainers.test1();
         // TestVirtualJavaThreads.test1();
         // TestMemoryLeak.testMemoryLeak1();
         // TestHashCode.test4();
+        // TestOptimize1.test1();
         //
         try {
-            TestOptimize1.test1();
+            TestDns.test1();
         } catch (Exception ex) {
             // ex.fillInStackTrace();
             String stackTrace = stackTraceToString(ex);
