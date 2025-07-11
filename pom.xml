@@ -83,12 +83,12 @@
         <dependency>
             <groupId>org.robolectric</groupId>
             <artifactId>android-all</artifactId>
-            <version>8.0.0_r4-robolectric-0</version>
+            <version>9-robolectric-4799589</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20180813</version>
+            <version>20231013</version>
         </dependency>
 
         <dependency>

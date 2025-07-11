@@ -99,7 +99,8 @@ public class Main {
         // TestHashCode.test4();
         //
         try {
-            TestOptimize1.test1();
+            // TestOptimize1.test1();
+            TestWordWrap.test2();
         } catch (Exception ex) {
             // ex.fillInStackTrace();
             String stackTrace = stackTraceToString(ex);

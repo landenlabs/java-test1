@@ -1,3 +1,6 @@
+import android.annotation.NonNull;
+import android.os.SystemPropertiesProto;
+
 public class TestWordWrap {
 
     public static String wrapString1(String s, String deliminator, int length) {
@@ -105,6 +108,44 @@ public class TestWordWrap {
             for (String str : STRS) {
                 System.out.println(wrapToRows(str, rows));
             }
+        }
+    }
+
+    /**
+     * Converts Excel cell (e.g., "A1", "B5", "AA10") to 0-based [column, row]
+     */
+    public static int[] cellStrToXY(@NonNull String cellString) {
+        String[] colStr = cellString.split("[0-9]+");
+
+        String columnLetters = colStr[0];
+        String rowNumberString = cellString.substring(columnLetters.length());
+
+        int column = 0;
+        for (char c : columnLetters.toCharArray()) {
+            column = column * 26 + (c - 'A' + 1);
+        }
+
+        // Convert to 0-based column index
+        return new int[]{column - 1, Integer.parseInt(rowNumberString) -1};
+    }
+
+    public static void test2() {
+
+        String str1 = "ABC123";
+        String[] parts = str1.split("[A-Za-z]+");
+        System.out.println("Split " + str1 + " into parts " + parts[0] + " and " + parts[1]);
+
+        String[] parts2 = str1.split("[0-9]+");
+        System.out.println("Split " + str1 + " into parts " + parts2[0] );
+
+        String str3 = "xx";
+        String[] parts3 = str3.split(",");
+        System.out.println("Split " + str3 + " into part3.length= " + parts3.length );
+
+        String[] cellPosList = new String[] { "A1", "B2", "AA1", "A123" };
+        for (String cellPos : cellPosList) {
+            int[] xy = cellStrToXY(cellPos);
+            System.out.println("Excel " + cellPos + " 0-based X=" + xy[0] + " Y=" + xy[1]);
         }
     }
 }
