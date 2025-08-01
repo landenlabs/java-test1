@@ -98,10 +98,10 @@ public class Main {
         // TestMemoryLeak.testMemoryLeak1();
         // TestHashCode.test4();
         // TestOptimize1.test1();
-        //
+        // TestOptimize1.test1();
+        // TestWordWrap.test2();
         try {
-            // TestOptimize1.test1();
-            TestWordWrap.test2();
+            StringTest2.test1();
         } catch (Exception ex) {
             // ex.fillInStackTrace();
             String stackTrace = stackTraceToString(ex);
